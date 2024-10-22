@@ -15,5 +15,23 @@ gcloud compute ssh $MASTER --zone=$ZONE --command="wget -O $USER_HOME/2-master-n
 gcloud compute scp $MASTER:$USER_HOME/kubeadm-token/kubeadm-join $USER_HOME --zone $ZONE
 
 # 刪除家目錄中的安裝腳本和下載的檔案
-CLEANUP_COMMAND="rm -rf $USER_HOME/1-setup-node.sh $USER_HOME/2-master-node.sh $USER_HOME/cni-plugins-linux-amd64-v1.6.0.tgz $USER_HOME/containerd-1.7.23-linux-amd64.tar.gz $USER_HOME/etcd-v3.5.15-linux-amd64 $USER_HOME/etcd-v3.5.15-linux-amd64.tar.gz $USER_HOME/kubeadm-config.yaml $USER_HOME/kubeadm-token $USER_HOME/runc.amd64"
-gcloud compute ssh $MASTER --zone=$ZONE --command="$CLEANUP_COMMAND"
+FILES_TO_REMOVE=(
+    "1-setup-node.sh"
+    "custom-resources.yaml"
+    "kubeadm-token"
+    "2-master-node.sh"
+    "etcd-v3.5.15-linux-amd64"
+    "kubectl-convert"
+    "cni-plugins-linux-amd64-v1.6.0.tgz"
+    "etcd-v3.5.15-linux-amd64.tar.gz"
+    "runc.amd64"
+    "containerd-1.7.23-linux-amd64.tar.gz"
+    "kubeadm-config.yaml"
+)
+
+CLEANUP_COMMAND="USER_HOME=\${USER_HOME:-~}; rm -rf"
+for file in "${FILES_TO_REMOVE[@]}"; do
+    CLEANUP_COMMAND+=" \$USER_HOME/$file"
+done
+
+gcloud compute ssh "$MASTER" --zone="$ZONE" --command="$CLEANUP_COMMAND"
