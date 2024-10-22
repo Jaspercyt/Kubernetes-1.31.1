@@ -47,7 +47,8 @@ echo "--------------------------------------------------------------------------
 # 安裝 Calico operator
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.2/manifests/tigera-operator.yaml
 # 安裝所需的自定義資源配置
-kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.2/manifests/custom-resources.yaml
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.28.2/manifests/custom-resources.yaml -O
+kubectl create -f custom-resources.yaml
 
 # 啟用 shell 自動補全
 # 參考資料: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#enable-shell-autocompletion
@@ -58,6 +59,10 @@ sudo apt-get install bash-completion
 source /usr/share/bash-completion/bash_completion
 echo 'source <(kubectl completion bash)' >>~/.bashrc
 source ~/.bashrc
+
+# 安裝 kubectl convert 插件
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl-convert"
+sudo install -o root -g root -m 0755 kubectl-convert /usr/local/bin/kubectl-convert
 
 # 產生不會過期的 kubeadm 連接 token
 # 參考資料: https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-token/
