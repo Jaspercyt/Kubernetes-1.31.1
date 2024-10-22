@@ -121,4 +121,4 @@ helm completion bash | sudo tee /etc/bash_completion.d/helm
 echo "----------------------------------------------------------------------------------------"
 echo "[TASK 8] Delete installation files"
 echo "----------------------------------------------------------------------------------------"
-# rm -rf *
+rm -rf *
