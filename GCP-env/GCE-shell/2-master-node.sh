@@ -69,7 +69,8 @@ sudo install -o root -g root -m 0755 kubectl-convert /usr/local/bin/kubectl-conv
 echo "----------------------------------------------------------------------------------------"
 echo "[TASK 4] kubeadm token create"
 echo "----------------------------------------------------------------------------------------"
-KUBEADM_DIR="/vagrant/kubeadm"
+mkdir -p /home/$(whoami)/kubeadm-token
+KUBEADM_DIR="/home/$(whoami)/kubeadm-token"
 TOKEN_FILE="${KUBEADM_DIR}/token"
 SHA256_FILE="${KUBEADM_DIR}/sha256"
 JOIN_CMD_FILE="${KUBEADM_DIR}/kubeadm-join"
